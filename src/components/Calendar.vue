@@ -57,7 +57,7 @@
               </v-toolbar>
             </v-sheet>
 
-            <v-dialog v-model="dialogDate" max-width="500">
+            <v-dialog v-model="dialogDate" max-width="500" @click:outside = "resetForm" >
               <v-card>
                 <v-container>
                   <v-form @submit.prevent="addEvent">
@@ -248,17 +248,15 @@ export default {
       }
       nativeEvent.stopPropagation();
     },
+
     updateRange() {
       const events = [];
       axios.get("/api/event").then((res) => {
-        console.log(res.data);
         this.events = res.data;
       });
       this.events = events;
     },
-    rnd(a, b) {
-      return Math.floor((b - a + 1) * Math.random()) + a;
-    },
+
     async editEvent() {
       const res = await axios.put("/api/event", {
         _id: this.selectedEvent._id,
@@ -275,12 +273,13 @@ export default {
       var result = confirm("Want to delete this event ?");
       if (result) {
         axios.delete(`/api/event/${id}`).then((response) => {
-          console.log(response);
+          console.log(response.data);
         });
       }
       this.selectedOpen = false;
       this.events = this.events.filter((e) => e._id !== id);
     },
+
     resetForm() {
       this.name = "",
       this.description = "";
@@ -288,6 +287,7 @@ export default {
       this.end = "";
       this.color = "";
     },
+
     addEvent() {
       const eventObj = {
         name: this.name,
@@ -307,6 +307,7 @@ export default {
         alert("You must enter event name, start, and end time");
       }
     },
+
     changeDadeToHe() {
       let start = new Date(this.selectedEvent.start);
       let end = new Date(this.selectedEvent.end);
@@ -315,7 +316,7 @@ export default {
       if (heStarsDate == heEndDate) {
         this.heDate = heStarsDate;
       } else {
-        this.heDate = heStarsDate + "-" + heEndDate;
+        this.heDate = heStarsDate + "  -  " + heEndDate;
       }
       this.isHeDate = !this.isHeDate;
     },

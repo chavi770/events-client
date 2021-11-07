@@ -3,7 +3,6 @@
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center"></div>
       <span class="ml-2">My calendar</span>
-      <span class="material-icons-outlined"> event </span>
     </v-app-bar>
     <v-main>
       <Calendar />
